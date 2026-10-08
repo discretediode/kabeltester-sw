@@ -8,18 +8,13 @@ Ziel des Projekts ist die Entwicklung eines kompakten Messgeräts zur schnellen 
 
 ### Hauptfunktionen der Software
 
-* **32-Pol-Messung & Brückenerkennung:** Steuerung des relaisbasierten Routings zur Messung von bis zu 32 Kontakten sowie Identifikation gewollter und ungewollter Brücken an den Steckverbindern[cite: 1].
+* **32-Pol-Messung & Brückenerkennung:** Steuerung des relaisbasierten Routings zur Messung von bis zu 32 Kontakten sowie Identifikation gewollter und ungewollter Brücken an den Steckverbindern.
 * **4-Zustände-Bewertung:** Automatische Auswertung und Zuordnung der gemessenen Widerstände in vier Kategorien[cite: 1]:
-  * **Leitend:** $0\ \Omega$ bis $1\ \Omega$[cite: 1]
-  * **Schluss (Niederohmig):** $1\ \Omega$ bis $1\text{ k}\Omega$[cite: 1]
-  * **Hochohmig:** $1\text{ k}\Omega$ bis $100\text{ k}\Omega$[cite: 1]
-  * **Isolierend:** $> 100\text{ k}\Omega$[cite: 1]
+  * **Leitend:** $0\ \Omega$ bis $1\ \Omega$
+  * **Schluss (Niederohmig):** $1\ \Omega$ bis $1\text{ k}\Omega$
+  * **Hochohmig:** $1\text{ k}\Omega$ bis $100\text{ k}\Omega$
+  * **Isolierend:** $> 100\text{ k}\Omega$
 * **Dateiverarbeitung (SD-Karte):** 
-  * Einlesen von Soll-Konfigurationen aus Textdateien zur automatischen Prüfung auf Korrektheit[cite: 1].
-  * Speichern von Ist-Messwerten in einem standardisierten Textformat zur Dokumentation[cite: 1].
-* **Benutzeroberfläche (UI):** Vor-Ort-Bedienung über das integrierte Display und Eingabeelemente[cite: 1].
-
-### Rechtliches & Lizenzierung
-
-* **Open-Source:** Der Quellcode ist unter der [Name deiner Lizenz, z. B. MIT-Lizenz] veröffentlicht.
-* **Drittanbieter-Software:** Alle verwendeten Bibliotheken und deren Lizenzen sind in der Dokumentation aufgeführt. Es kommen keine geschützten Unternehmens-IPs zum Einsatz[cite: 1].
+  * Einlesen von Soll-Konfigurationen aus Textdateien zur automatischen Prüfung auf Korrektheit
+  * Speichern von Ist-Messwerten in einem standardisierten Textformat zur Dokumentation
+* **Benutzeroberfläche (UI):** Vor-Ort-Bedienung über das integrierte Display und Eingabeelemente.
