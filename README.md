@@ -9,7 +9,7 @@ Ziel des Projekts ist die Entwicklung eines kompakten Messgeräts zur schnellen 
 ### Hauptfunktionen der Software
 
 * **32-Pol-Messung & Brückenerkennung:** Steuerung des relaisbasierten Routings zur Messung von bis zu 32 Kontakten sowie Identifikation gewollter und ungewollter Brücken an den Steckverbindern.
-* **4-Zustände-Bewertung:** Automatische Auswertung und Zuordnung der gemessenen Widerstände in vier Kategorien[cite: 1]:
+* **4-Zustände-Bewertung:** Automatische Auswertung und Zuordnung der gemessenen Widerstände in vier Kategorien:
   * **Leitend:** $0\ \Omega$ bis $1\ \Omega$
   * **Schluss (Niederohmig):** $1\ \Omega$ bis $1\text{ k}\Omega$
   * **Hochohmig:** $1\text{ k}\Omega$ bis $100\text{ k}\Omega$
