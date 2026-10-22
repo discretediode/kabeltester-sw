@@ -1,4 +1,5 @@
 #include <Arduino.h>
+#include <SD.h>
 #include "abspeichern.h"
 
 // put function declarations here:
