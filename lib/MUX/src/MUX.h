@@ -8,7 +8,7 @@ class MUX {
     
     MUX(uint8_t s0, uint8_t s1, uint8_t s2, uint8_t s3, uint8_t enablePin );
     
-    //SteuerPins definieren 
+    //SteuerPins definieren und setzt auf Kannal 0
     void ini();
 
     // Wählt den Kanal
