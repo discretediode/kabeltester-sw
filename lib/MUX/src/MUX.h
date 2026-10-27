@@ -5,16 +5,16 @@
 
 class MUX {
   public:
-    // Konstruktor: s0-s3 sind Pflicht, enablePin ist optional (255 = nicht genutzt)
-    MUX(uint8_t s0, uint8_t s1, uint8_t s2, uint8_t s3, uint8_t enablePin = 255);
+    
+    MUX(uint8_t s0, uint8_t s1, uint8_t s2, uint8_t s3, uint8_t enablePin );
+    
+    //SteuerPins definieren 
+    void ini();
 
-    // Initialisiert die Pins (im setup() aufrufen)
-    void begin();
-
-    // Wählt den Kanal (0 bis 15) per Bit-Operation
+    // Wählt den Kanal
     void setChannel(uint8_t channel);
 
-    // Aktiviert (LOW) oder deaktiviert (HIGH) den Multiplexer über Pin 15
+    // Aktiviert (LOW) oder deaktiviert (HIGH) den Multiplexer über enablePin
     void enable();
     void disable();
 
