@@ -14,7 +14,7 @@ void parameterspeichern(int pinnummer, float widerstand, char kategorie) {
     dataFile.print(widerstand);
     dataFile.print(";");
     dataFile.print(kategorie);
-    dataFile.print("\n\n")
+    dataFile.print("\n\n");
 
     dataFile.close();
 
