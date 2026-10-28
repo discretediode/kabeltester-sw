@@ -16,7 +16,7 @@ ADC::ADC(uint8_t address, TwoWire *wire) {
     _wire    = wire;
     _gain    = GAIN_4_096V; // Ideal für 0 - 3.3V am ESP32
     _alrtPin = -1;
-    _error   = KY053_OK;
+    _error   = ADC_OK;
 }
 
 bool ADC::begin(int sdaPin, int sclPin, int alrtPin) {
