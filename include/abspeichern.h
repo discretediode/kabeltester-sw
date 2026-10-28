@@ -17,6 +17,4 @@ void parameterspeichern(int pinnummer, float widerstand, char kategorie) {
 
     dataFile.close();
 
-bool writeToSD();
-
 }
