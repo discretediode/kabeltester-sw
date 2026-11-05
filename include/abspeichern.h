@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <SD.h>
 
-const int chipSelect = 4;
+const int chipSelect = 19;
 
 void parameterspeichern(int pinnummer, float widerstand, char kategorie) {
 
