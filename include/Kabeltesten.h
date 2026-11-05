@@ -1,7 +1,7 @@
 #include <Arduino.h>
-#include "abspeichern.h"
 #include "MUX.h"
 #include "ADC.h"
+
 //MUX ADC L
 #define ADC_L_S0 26
 #define ADC_L_S1 27

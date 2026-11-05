@@ -1,12 +1,15 @@
 #include <Arduino.h>
 #include "abspeichern.h"
+#include "Kabeltesten.h"
+
 
 // put function declarations here:
 int myFunction(int, int);
 
 void setup() {
   // put your setup code here, to run once:
-  int result = myFunction(3, 3);
+  MUX_ini();
+  
 }
 
 void loop() {
