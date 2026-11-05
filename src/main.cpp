@@ -8,7 +8,7 @@ int myFunction(int, int);
 
 void setup() {
   // put your setup code here, to run once:
-  MUX_ini();
+  Kabel_ini();
   
 }
 

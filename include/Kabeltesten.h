@@ -54,11 +54,16 @@
 #define ADC2_R_S3 12
 #define ADC2_R_E  255  // enable pins anpassen
 
+// ADC Pins definieren
+#define PIN_SDA  21
+#define PIN_SCL  22
+#define PIN_ALRT -1 
+
 
 
 
 // put function declarations here:
-void MUX_ini();
+void Kabel_ini();
 void Kabel_End2End(uint8_t PinAnzahl);
 void Kabel_SteckerL(uint8_t PinAnzahl);
 void Kabel_SteckerR(uint8_t PinAnzahl);
@@ -73,9 +78,12 @@ MUX muxPWR2_R(PWR2_R_S0, PWR2_R_S1, PWR2_R_S2, PWR2_R_S3, PWR2_R_E);
 MUX muxADC2_L(ADC2_L_S0, ADC2_L_S1, ADC2_L_S2, ADC2_L_S3, ADC2_L_E);
 MUX muxADC2_R(ADC2_R_S0, ADC2_R_S1, ADC2_R_S2, ADC2_R_S3, ADC2_R_E);
 
+// ADC definieren
+ADC adc(0x48);
+
 
 // MUX auf ausgangsstellung setzen
-void MUX_ini(){
+void Kabel_ini(){
   muxADC_L.ini();
   muxADC_R.ini();
   muxPWR_L.ini();
@@ -84,6 +92,7 @@ void MUX_ini(){
   muxPWR2_R.ini();
   muxADC2_L.ini();
   muxADC2_R.ini();
+  adc.begin(PIN_SDA, PIN_SCL, PIN_ALRT);
 }
 
 
@@ -110,6 +119,7 @@ void Kabel_End2End(uint8_t PinAnzahl){
       muxPWR_R.enable();
       muxPWR_R.setChannel(j-16);
       //ADC messen Rechnen Klassifizieren 
+      float voltE2E  = adc.readVolt(CH_A0);
       //......
       } 
 
@@ -141,6 +151,7 @@ void Kabel_SteckerL(uint8_t PinAnzahl){
       muxPWR2_R.enable();
       muxPWR2_R.setChannel(j-16);
       //ADC messen Rechnen Klassifizieren 
+      float voltSTL  = adc.readVolt(CH_A0);
       //......
       } 
     }
@@ -170,6 +181,7 @@ void Kabel_SteckerR(uint8_t PinAnzahl){
       muxPWR_R.enable();
       muxPWR_R.setChannel(j-16);
       //ADC messen Rechnen Klassifizieren 
+      float voltStR  = adc.readVolt(CH_A1);
       //......
       } 
     }
