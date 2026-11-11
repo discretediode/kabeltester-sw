@@ -57,7 +57,7 @@
 // ADC Pins definieren
 #define PIN_SDA  21
 #define PIN_SCL  22
-#define PIN_ALRT -1 
+#define PIN_ALRT -1 // Warum -1 ???
 
 // Bekannter Widerstand und Versorgungsspannung für Spannungsteiler definieren
 #define R_KNOWN 10000.0  // 10k Ohm
@@ -69,8 +69,8 @@ void Kabel_ini();
 void Kabel_End2End(uint8_t PinAnzahl);
 void Kabel_SteckerL(uint8_t PinAnzahl);
 void Kabel_SteckerR(uint8_t PinAnzahl);
-float Spannungsteiler(float U_mess, float R_bekannt);
-void Klassifizierung(float R_Kabel, uint8_t PinAnzahl);
+float Spannungsteiler(float U_mess);
+const char* Klassifizierung(float R_Kabel, uint8_t PinAnzahl);
 
 //MUX Pins definieren
 MUX muxADC_L(ADC_L_S0, ADC_L_S1, ADC_L_S2, ADC_L_S3, ADC_L_E);
@@ -201,30 +201,27 @@ float Spannungsteiler(float U_mess)
   float R_Kabel = (V_SUPPLY - U_mess) / I_bekannt; // Widerstand des Kabels berechnen
   return R_Kabel;
 }
-void Klassifizierung(float R_Kabel, uint8_t PinAnzahl)
+
+const char* Klassifizierung(float R_Kabel)
 {
-  char ergebnis[PinAnzahl];
-  for(uint8_t i=0; i<PinAnzahl ; i++) 
-  {  
    if (R_Kabel <= 1.0 )
     {
-      ergebnis[i]= 'Leitend';
+      return "Leitend";
     }
     else if (R_Kabel > 1.0 && R_Kabel <= 1000.0)
     {
-      ergebnis[i]= 'Schluss';
+      return "Schluss";
     }
-    else if (R_Kabel > 1000.0 && R_Kabel <= 10000.0)
+    else if (R_Kabel > 1000.0 && R_Kabel <= 100000.0)
     {
-      ergebnis[i]= 'Hochohmig';
+      return "Hochohmig";
     }
-    else if (R_Kabel > 10000.0)
+    else if (R_Kabel > 100000.0)
     {
-      ergebnis[i]= 'Isolierend';
+      return "Isolierend";
     }
     else
     {
-      ergebnis[i]= 'unbekannt';
+      return "unbekannt";
     }
- }
 }
