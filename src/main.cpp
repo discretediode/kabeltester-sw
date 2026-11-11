@@ -10,9 +10,7 @@ void setup() {
   int result = myFunction(3, 3);
   int anzahl;
   int modus;
-  std::list<int> pinnummer;
-  std::list<int> widerstand;
-  std::list<char> einordnung;
+  std::list<std::tuple<int, int, char>> daten;
 }
 
 void loop() {
