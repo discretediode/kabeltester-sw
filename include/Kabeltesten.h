@@ -59,7 +59,9 @@
 #define PIN_SCL  22
 #define PIN_ALRT -1 
 
-
+// Bekannter Widerstand und Versorgungsspannung für Spannungsteiler definieren
+#define R_KNOWN 10000.0  // 10k Ohm
+#define V_SUPPLY 5.0     // Versorgungsspannung in Volt
 
 
 // put function declarations here:
@@ -67,6 +69,8 @@ void Kabel_ini();
 void Kabel_End2End(uint8_t PinAnzahl);
 void Kabel_SteckerL(uint8_t PinAnzahl);
 void Kabel_SteckerR(uint8_t PinAnzahl);
+float Spannungsteiler(float U_mess, float R_bekannt);
+void Klassifizierung(float R_Kabel, uint8_t PinAnzahl);
 
 //MUX Pins definieren
 MUX muxADC_L(ADC_L_S0, ADC_L_S1, ADC_L_S2, ADC_L_S3, ADC_L_E);
@@ -119,7 +123,8 @@ void Kabel_End2End(uint8_t PinAnzahl){
       muxPWR_R.enable();
       muxPWR_R.setChannel(j-16);
       //ADC messen Rechnen Klassifizieren 
-      float voltE2E  = adc.readVolt(CH_A0);
+      float voltE2E  = adc.readVolt(CH_A0); //wo wird der Kanal definiert???
+      float U_mess  = adc.readVolt(CH_A0);
       //......
       } 
 
@@ -152,6 +157,7 @@ void Kabel_SteckerL(uint8_t PinAnzahl){
       muxPWR2_R.setChannel(j-16);
       //ADC messen Rechnen Klassifizieren 
       float voltSTL  = adc.readVolt(CH_A0);
+      float U_mess  = adc.readVolt(CH_A0);
       //......
       } 
     }
@@ -182,9 +188,43 @@ void Kabel_SteckerR(uint8_t PinAnzahl){
       muxPWR_R.setChannel(j-16);
       //ADC messen Rechnen Klassifizieren 
       float voltStR  = adc.readVolt(CH_A1);
+      float U_mess  = adc.readVolt(CH_A0);
       //......
       } 
     }
   }
 }
 
+float Spannungsteiler(float U_mess) 
+{
+  float I_bekannt = U_mess / R_KNOWN; // Strom durch den bekannten Widerstand berechnen
+  float R_Kabel = (V_SUPPLY - U_mess) / I_bekannt; // Widerstand des Kabels berechnen
+  return R_Kabel;
+}
+void Klassifizierung(float R_Kabel, uint8_t PinAnzahl)
+{
+  char ergebnis[PinAnzahl];
+  for(uint8_t i=0; i<PinAnzahl ; i++) 
+  {  
+   if (R_Kabel <= 1.0 )
+    {
+      ergebnis[i]= 'Leitend';
+    }
+    else if (R_Kabel > 1.0 && R_Kabel <= 1000.0)
+    {
+      ergebnis[i]= 'Schluss';
+    }
+    else if (R_Kabel > 1000.0 && R_Kabel <= 10000.0)
+    {
+      ergebnis[i]= 'Hochohmig';
+    }
+    else if (R_Kabel > 10000.0)
+    {
+      ergebnis[i]= 'Isolierend';
+    }
+    else
+    {
+      ergebnis[i]= 'unbekannt';
+    }
+ }
+}
