@@ -16,7 +16,7 @@
 #define ADC_R_E  25
 
 // MUX PWR L
-#define PWR_L_S0 04
+#define PWR_L_S0 04 // vielleich 4, wegen Oktalzahl, besser 4 in dezimal schreiben
 #define PWR_L_S1 00
 #define PWR_L_S2 02
 #define PWR_L_S3 15
@@ -28,7 +28,7 @@
 #define PWR_R_S3 15
 #define PWR_R_E  16 
 
-// MUX PWR2 L
+// MUX PWR2 L 
 #define PWR2_L_S0 04 
 #define PWR2_L_S1 00
 #define PWR2_L_S2 02 
@@ -118,15 +118,15 @@ void Kabel_End2End(uint8_t PinAnzahl){
       muxPWR_R.disable();
       muxPWR_L.setChannel(j);
       }
-      else{
+      else if(j>=16) {
       muxPWR_L.disable();
       muxPWR_R.enable();
       muxPWR_R.setChannel(j-16);
+      } 
       //ADC messen Rechnen Klassifizieren 
       float voltE2E  = adc.readVolt(CH_A0); //wo wird der Kanal definiert???
       float U_mess  = adc.readVolt(CH_A0);
       //......
-      } 
 
     }
   }
@@ -224,4 +224,29 @@ const char* Klassifizierung(float R_Kabel)
     {
       return "unbekannt";
     }
+}
+
+void matrix_scanner(uint8_t PinAnzahl)
+{
+  for (uint8_t tx_pin = 0; tx_pin < PinAnzahl; tx_pin++) 
+  {
+    // Funktion für Versorgung des tx_pin implementieren
+    if(tx_pin<16)
+    {
+      muxADC2_L.enable();
+      muxADC2_R.disable();
+      muxADC2_L.setChannel(tx_pin);
+    }
+    else
+    {
+      muxADC2_L.disable();
+      muxADC2_R.enable();
+      muxADC2_R.setChannel(tx_pin-16);
+    }
+    for (uint8_t rx_pin = 0; rx_pin < PinAnzahl; rx_pin++) 
+    {
+      // Funktion für Messung des rx_pin implementieren
+    }
+  }
+
 }
