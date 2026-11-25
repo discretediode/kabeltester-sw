@@ -11,7 +11,7 @@ void setup() {
   int result = myFunction(3, 3);
   int anzahl;
   int modus;
-  std::string in_out[16][16];
+  std::vector<std::vector<int>> in_out(16, std::vector<int>(16));
   std::vector<std::vector<int>> in_in;
   
   for (int i = 7; i >= 1; --i) {
