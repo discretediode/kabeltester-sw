@@ -71,6 +71,8 @@ void Kabel_SteckerL(uint8_t PinAnzahl);
 void Kabel_SteckerR(uint8_t PinAnzahl);
 float Spannungsteiler(float U_mess);
 const char* Klassifizierung(float R_Kabel, uint8_t PinAnzahl);
+void matrix_scanner(uint8_t PinAnzahl, uint8_t choice);
+
 
 //MUX Pins definieren
 MUX muxADC_L(ADC_L_S0, ADC_L_S1, ADC_L_S2, ADC_L_S3, ADC_L_E);
@@ -226,9 +228,30 @@ const char* Klassifizierung(float R_Kabel)
     }
 }
 
-void matrix_scanner(uint8_t PinAnzahl)
+void matrix_scanner(uint8_t PinAnzahl, uint8_t choice)
 {
-  for (uint8_t tx_pin = 0; tx_pin < PinAnzahl; tx_pin++) 
+  switch (choice) {
+    case 1:
+      // Implementierung für die erste Option
+      Kabel_End2End(PinAnzahl);
+      break;
+    case 2:
+      // Implementierung für die zweite Option
+      Kabel_SteckerL(PinAnzahl);
+      break;
+    case 3:
+      // Implementierung für die Standardoption
+      Kabel_SteckerR(PinAnzahl);
+      break;
+    default:
+      // Standardaktion oder Fehlerbehandlung
+      Serial.println("Ungültige Wahl. Bitte wählen Sie 1, 2 oder 3.");
+      break;
+  }
+}
+
+
+  /*for (uint8_t tx_pin = 0; tx_pin < PinAnzahl; tx_pin++) 
   {
     // Funktion für Versorgung des tx_pin implementieren
     if(tx_pin<16)
@@ -246,7 +269,21 @@ void matrix_scanner(uint8_t PinAnzahl)
     for (uint8_t rx_pin = 0; rx_pin < PinAnzahl; rx_pin++) 
     {
       // Funktion für Messung des rx_pin implementieren
+      if(rx_pin<16)
+      {
+        muxPWR_L.enable();
+        muxPWR_R.disable();
+        muxPWR_L.setChannel(rx_pin);
+      }
+      else
+      {
+        muxPWR_L.disable();
+        muxPWR_R.enable();
+        muxPWR_R.setChannel(rx_pin-16);
+      }
     }
-  }
+  }*/
 
-}
+
+
+
