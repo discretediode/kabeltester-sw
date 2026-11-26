@@ -5,7 +5,7 @@
 #include<string.h>
 #include<vector>
 
-const int chipSelect = 31;
+const int chipSelect = 19;
 
 void parameterspeichern(int anzahl, const std::vector<std::vector<int>>& in_out, const std::vector<std::vector<int>>& in_in) {
 
