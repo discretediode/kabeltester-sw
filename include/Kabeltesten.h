@@ -240,7 +240,7 @@ void matrix_scanner(uint8_t PinAnzahl, uint8_t choice)
       Kabel_SteckerL(PinAnzahl);
       break;
     case 3:
-      // Implementierung für die Standardoption
+      // Implementierung für die dritte Option
       Kabel_SteckerR(PinAnzahl);
       break;
     default:
