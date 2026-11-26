@@ -43,10 +43,14 @@ void ADC::setGain(ADCGain gain) {
 
 int16_t ADC::readRaw(ADCChannel channel) {
     if (channel > 3) return 0;
+    // 0x4000 = erster einseitiger Eingang (AIN0 gegen GND)
+    return readRawInput((ADCInput)(0x4000 | (channel << 12)));
+}
 
+int16_t ADC::readRawInput(ADCInput input) {
     // Konfiguration zusammenbauen (wie in ADS1X15::_requestADC)
     uint16_t config = OS_START_SINGLE
-                    | ((4 + channel) << 12) // Kanal A0..A3 auswählen
+                    | input                 // Eingang: einseitig oder differentiell
                     | _gain
                     | MODE_SINGLE
                     | DATARATE_128SPS
@@ -67,7 +71,37 @@ int16_t ADC::readRaw(ADCChannel channel) {
     }
 
     // 16-Bit Messwert auslesen
-    return (int16_t)_readRegister(REG_CONVERT);
+    int16_t raw = (int16_t)_readRegister(REG_CONVERT);
+    _saturated = (raw > 32000) || (raw < -32000);
+    return raw;
+}
+
+float ADC::readVoltInput(ADCInput input) {
+    return rawToVolt(readRawInput(input));
+}
+
+float ADC::readVoltAuto(ADCInput input) {
+    ADCGain alt = _gain;
+
+    // Grobmessung im groessten Bereich - hier uebersteuert nichts.
+    setGain(GAIN_6_144V);
+    float grob = readVoltInput(input);
+
+    // Feinsten Bereich waehlen, der den Messwert noch sicher fasst (10% Reserve).
+    const ADCGain stufen[] = { GAIN_0_256V, GAIN_0_512V, GAIN_1_024V,
+                               GAIN_2_048V, GAIN_4_096V, GAIN_6_144V };
+    const float   grenze[] = { 0.256f, 0.512f, 1.024f, 2.048f, 4.096f, 6.144f };
+    ADCGain fein = GAIN_6_144V;
+    for (uint8_t i = 0; i < 6; i++) {
+        if (fabsf(grob) < grenze[i] * 0.9f) { fein = stufen[i]; break; }
+    }
+
+    setGain(fein);
+    float fein_wert = readVoltInput(input);
+    setGain(alt);
+
+    // Falls die Feinmessung doch anschlaegt, ist der Grobwert der ehrlichere.
+    return _saturated ? grob : fein_wert;
 }
 
 float ADC::rawToVolt(int16_t rawValue) {

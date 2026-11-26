@@ -8,6 +8,20 @@
 #define ADC_ERROR_TIMEOUT    -101
 #define ADC_ERROR_I2C        -102
 
+// Eingangskonfiguration des ADS1115 (MUX-Bits, bereits auf Position 12..14)
+// Differentiell: misst die Differenz zweier Pins, nicht gegen GND.
+// DIFF_0_1 ist beim Kabeltester die Spannung ueber dem Kabel (ANALOG_L - ANALOG_R).
+enum ADCInput : uint16_t {
+    DIFF_0_1 = 0x0000,   // AIN0 - AIN1
+    DIFF_0_3 = 0x1000,
+    DIFF_1_3 = 0x2000,
+    DIFF_2_3 = 0x3000,
+    SE_A0    = 0x4000,   // AIN0 gegen GND
+    SE_A1    = 0x5000,
+    SE_A2    = 0x6000,
+    SE_A3    = 0x7000
+};
+
 // Analoge Eingänge A0 bis A3 einfach auswählen
 enum ADCChannel : uint8_t {
     CH_A0 = 0,
@@ -43,6 +57,18 @@ public:
     // Liest den 16-Bit Rohwert eines Kanals (CH_A0 bis CH_A3)
     int16_t readRaw(ADCChannel channel);
 
+    // Wie readRaw, aber mit freier Eingangswahl - auch differentiell.
+    int16_t readRawInput(ADCInput input);
+    float   readVoltInput(ADCInput input);
+
+    // Misst zuerst grob (+-4.096V, uebersteuert nie), waehlt daraus den
+    // feinsten noch passenden Bereich und misst erneut: 2 Wandlungen,
+    // bis zu 16x bessere Aufloesung. Stellt den alten Gain wieder her.
+    float   readVoltAuto(ADCInput input);
+
+    // true, wenn die letzte Wandlung am Bereichsende klebte
+    bool    wasSaturated() const { return _saturated; }
+
     // Rechnet einen gemessenen Rohwert schnell und präzise in Volt um
     float rawToVolt(int16_t rawValue);
 
@@ -61,6 +87,7 @@ private:
     ADCGain  _gain;
     int      _alrtPin;
     int8_t   _error;
+    bool     _saturated = false;
 
     float    _getMaxVoltage();
     bool     _writeRegister(uint8_t reg, uint16_t value);
